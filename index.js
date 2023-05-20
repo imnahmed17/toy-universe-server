@@ -32,6 +32,8 @@ async function run() {
             let query = {};
             if (req.query?.toyName) {
                 query = { toyName: req.query.toyName };
+            } else if (req.query?.email) {
+                query = { email: req.query.email };
             }
             const result = await toyCollection.find(query).limit(20).toArray();
             res.send(result);
@@ -42,6 +44,13 @@ async function run() {
             console.log(toy);
             const result = await toyCollection.insertOne(toy);
             res.json(result);
+        });
+
+        app.delete('/toys/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await toyCollection.deleteOne(query);
+            res.send(result);
         });
         
         // Send a ping to confirm a successful connection
