@@ -34,8 +34,10 @@ async function run() {
                 query = { toyName: req.query.toyName };
             } else if (req.query?.email) {
                 query = { email: req.query.email };
-            }
-            const result = await toyCollection.find(query).limit(20).toArray();
+            } 
+
+            const sort = req.query?.sort === "Ascending";
+            const result = await toyCollection.find(query).sort({ price: sort ? 1 : -1 }).limit(20).toArray();
             res.send(result);
         });
 
