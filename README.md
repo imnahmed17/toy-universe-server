@@ -1,4 +1,4 @@
-# car-doctor-server
+# toy-universe-server
 Containing some live json files
 
 ## Resources & Credits
