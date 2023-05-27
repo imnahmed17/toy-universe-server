@@ -2,7 +2,7 @@
 Containing some live json files
 
 ## Server Link
-Hosted in Vercel -> [toy-universe-server](toy-universe-server-lake.vercel.app)
+Hosted in Vercel -> [toy-universe-server](https://toy-universe-server-lake.vercel.app)
 
 ## Resources & Credits
 [Express js](https://expressjs.com/en/starter/installing.html)
