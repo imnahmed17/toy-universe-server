@@ -31,7 +31,7 @@ async function run() {
         app.get('/toys', async (req, res) => {
             let query = {};
             if (req.query?.toyName) {
-                query = { toyName: req.query.toyName };
+                query = { toyName: { $regex: req.query.toyName, $options: 'i' } };
             } else if (req.query?.email) {
                 query = { email: req.query.email };
             } 
