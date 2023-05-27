@@ -36,9 +36,12 @@ async function run() {
                 query = { email: req.query.email };
             } 
 
-            const sort = req.query?.sort === "Ascending";
-            if (sort) {
-                const result = await toyCollection.find(query).sort({ price: sort ? 1 : -1 }).limit(20).toArray();
+            const sort = req.query?.sort;
+            if (sort === "Ascending") {
+                const result = await toyCollection.find(query).sort({ price: 1 }).limit(20).toArray();
+                return res.send(result);
+            } else if (sort === "Descending") {
+                const result = await toyCollection.find(query).sort({ price: -1 }).limit(20).toArray();
                 return res.send(result);
             }
 
