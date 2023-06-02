@@ -29,12 +29,19 @@ async function run() {
 
         // toys 
         app.get('/toys', async (req, res) => {
+            const page = parseInt(req.query.page) || 0;
+            const limit = parseInt(req.query.limit) || 5;
+            const skip = page * limit;
             let query = {};
+
             if (req.query?.toyName) {
                 query = { toyName: { $regex: req.query.toyName, $options: 'i' } };
             } else if (req.query?.email) {
                 query = { email: req.query.email };
-            } 
+            } else if (req.query?.page) {
+                const result = await toyCollection.find(query).skip(skip).limit(limit).toArray();
+                return res.send(result);
+            }
 
             const sort = req.query?.sort;
             if (sort === "Ascending") {
@@ -45,10 +52,7 @@ async function run() {
                 return res.send(result);
             }
 
-            const page = parseInt(req.query.page) || 0;
-            const limit = parseInt(req.query.limit) || 5;
-            const skip = page * limit;
-            const result = await toyCollection.find(query).skip(skip).limit(limit).toArray();
+            const result = await toyCollection.find(query).toArray();
             res.send(result);
         });
 
