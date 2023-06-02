@@ -38,14 +38,17 @@ async function run() {
 
             const sort = req.query?.sort;
             if (sort === "Ascending") {
-                const result = await toyCollection.find(query).sort({ price: 1 }).limit(20).toArray();
+                const result = await toyCollection.find(query).sort({ price: 1 }).toArray();
                 return res.send(result);
             } else if (sort === "Descending") {
-                const result = await toyCollection.find(query).sort({ price: -1 }).limit(20).toArray();
+                const result = await toyCollection.find(query).sort({ price: -1 }).toArray();
                 return res.send(result);
             }
 
-            const result = await toyCollection.find(query).limit(20).toArray();
+            const page = parseInt(req.query.page) || 0;
+            const limit = parseInt(req.query.limit) || 5;
+            const skip = page * limit;
+            const result = await toyCollection.find(query).skip(skip).limit(limit).toArray();
             res.send(result);
         });
 
@@ -86,6 +89,11 @@ async function run() {
             const query = { _id: new ObjectId(id) };
             const result = await toyCollection.deleteOne(query);
             res.send(result);
+        });
+
+        app.get('/totalToys', async (req, res) => {
+            const result = await toyCollection.estimatedDocumentCount();
+            res.send({ totalToys: result });
         });
         
         // Send a ping to confirm a successful connection
